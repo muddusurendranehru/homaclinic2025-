@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homa Healthcare Center - Payment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .payment-container {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            max-width: 450px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 30px;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 10px solid #2a5298;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            opacity: 0.95;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .service-info {
+            margin-bottom: 35px;
+        }
+        
+        .service-title {
+            font-size: 24px;
+            color: #1e3c72;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .service-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .qr-section {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 40px 20px;
+            margin: 30px 0;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .qr-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            display: inline-block;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .qr-code {
+            width: 280px;
+            height: 280px;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+        
+        .qr-instructions {
+            color: #1e3c72;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .qr-steps {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            color: #999;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            font-size: 14px;
+        }
+        
+        .payment-button {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+        
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+        }
+        
+        .amount-options {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .amount-title {
+            color: #1e3c72;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .amount-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .amount-item {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e3c72;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-item:hover {
+            border-color: #2a5298;
+            background: #f0f4ff;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            padding: 20px 0;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .feature {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-text {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .contact-info {
+            background: #e3f2fd;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .contact-info h3 {
+            color: #1565c0;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .contact-info p {
+            color: #1565c0;
+            font-size: 14px;
+            margin: 3px 0;
+        }
+        
+        .copy-button {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        
+        .copy-button:hover {
+            background: #e0e0e0;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 480px) {
+            .payment-container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+            
+            .qr-code {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="header">
+            <h1>🏥 HOMA HEALTHCARE CENTER</h1>
+            <p>Dr. Muddu Surendra Nehru, MD</p>
+            <p>Hyderabad, Telangana</p>
+        </div>
+        
+        <div class="content">
+            <div class="service-info">
+                <div class="service-title">Medical Payment</div>
+                <div class="service-subtitle">Secure • Instant • Zero Processing Fee</div>
+            </div>
+            
+            <div class="qr-section">
+                <div class="qr-container">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&format=png&data=upi://pay?pa=9963721999@ybl%26pn=HOMA%20HEALTHCARE%20CENTER%26tn=Medical%20Payment%26cu=INR" 
+                         alt="HOMA HEALTHCARE PAYMENT QR CODE" 
+                         class="qr-code"
+                         id="qr-image">
+                </div>
+                <div class="qr-instructions">📱 Scan & Pay Any Amount</div>
+                <div class="qr-steps">
+                    1. Open any UPI app (Google Pay, PhonePe, Paytm)<br>
+                    2. Scan the QR code above<br>
+                    3. Enter your payment amount<br>
+                    4. Complete payment securely
+                </div>
+            </div>
+            
+            <div class="divider">
+                <span>OR TAP TO PAY</span>
+            </div>
+            
+            <a href="upi://pay?pa=9963721999@ybl&pn=HOMA%20HEALTHCARE%20CENTER&tn=Medical%20Payment&cu=INR" class="payment-button" id="payment-button">
+                💳 Open UPI App & Pay
+            </a>
+            
+            <div class="amount-options">
+                <div class="amount-title">💰 Common Service Fees</div>
+                <div class="amount-grid">
+                    <div class="amount-item">₹300 - General Consultation</div>
+                    <div class="amount-item">₹500 - Specialist Consultation</div>
+                    <div class="amount-item">₹800 - Follow-up Package</div>
+                    <div class="amount-item">₹1200 - Health Check-up</div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-text">Bank Grade<br>Security</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">Instant<br>Settlement</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💳</div>
+                    <div class="feature-text">All Payment<br>Methods</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h3>📋 Merchant Details</h3>
+                <p><strong>Merchant:</strong> HOMA HEALTHCARE CENTER</p>
+                <p><strong>Doctor:</strong> Dr. Muddu Surendra Nehru, MD</p>
+                <p><strong>UPI ID:</strong> 9963721999@ybl</p>
+                <p><strong>Location:</strong> Hyderabad, Telangana</p>
+                <button class="copy-button" onclick="copyUPI()">📋 Copy UPI ID</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>🏥 Professional Medical Services</strong></p>
+            <p>For assistance with payment, contact our reception</p>
+            <p>© 2025 Homa Healthcare Center. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Professional merchant QR code ready for payments
+        console.log('Homa Healthcare Payment System Ready');
+        
+        // Copy UPI ID function
+        function copyUPI() {
+            const upiId = '9963721999@ybl';
+            navigator.clipboard.writeText(upiId).then(() => {
+                alert('UPI ID copied to clipboard: ' + upiId);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = upiId;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('UPI ID copied: ' + upiId);
+            });
+        }
+
+        // Add error handling for QR code image
+        document.getElementById('qr-image').onerror = function() {
+            console.log('QR image failed to load, generating fallback');
+            this.src = 'https://chart.googleapis.com/chart?chs=280x280&cht=qr&chl=' + encodeURIComponent('upi://pay?pa=9963721999@ybl&pn=HOMA HEALTHCARE CENTER&tn=Medical Payment&cu=INR');
+        };
+    </script>
+</body>
+</html>
